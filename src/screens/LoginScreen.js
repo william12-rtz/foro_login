@@ -19,16 +19,20 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true); // true = Login, false = Registro
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // Mensaje de error visible
 
   // Manejar Login/Registro con Email
   const handleEmailAuth = async () => {
+    // Limpiar mensaje de error previo
+    setErrorMessage('');
+    
     if (!email || !password) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      setErrorMessage('Por favor completa todos los campos');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
+      setErrorMessage('La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
@@ -46,10 +50,10 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Éxito', result.message);
         navigation.replace('Home');
       } else {
-        Alert.alert('Error', result.error);
+        setErrorMessage(result.error);
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error inesperado');
+      setErrorMessage('Ocurrió un error inesperado');
     } finally {
       setLoading(false);
     }
@@ -57,6 +61,9 @@ const LoginScreen = ({ navigation }) => {
 
   // Manejar Login con Google
   const handleGoogleSignIn = async () => {
+    // Limpiar mensaje de error previo
+    setErrorMessage('');
+    
     setLoading(true);
 
     try {
@@ -65,11 +72,14 @@ const LoginScreen = ({ navigation }) => {
       if (result.success) {
         Alert.alert('Éxito', result.message);
         navigation.replace('Home');
+      } else if (result.cancelled) {
+        // Usuario canceló el popup, no mostrar error
+        console.log('Usuario canceló el inicio de sesión con Google');
       } else {
-        Alert.alert('Error', result.error);
+        setErrorMessage(result.error);
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error al iniciar sesión con Google');
+      setErrorMessage('Ocurrió un error al iniciar sesión con Google');
     } finally {
       setLoading(false);
     }
@@ -98,6 +108,13 @@ const LoginScreen = ({ navigation }) => {
 
         {/* Formulario */}
         <View style={styles.form}>
+          {/* Mensaje de Error */}
+          {errorMessage ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>⚠️ {errorMessage}</Text>
+            </View>
+          ) : null}
+          
           <TextInput
             style={styles.input}
             placeholder="Correo Electrónico"
@@ -264,6 +281,19 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 14,
     fontWeight: '600',
+  },
+  errorContainer: {
+    backgroundColor: '#ffebee',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
+    borderLeftWidth: 4,
+    borderLeftColor: '#f44336',
+  },
+  errorText: {
+    color: '#c62828',
+    fontSize: 14,
+    fontWeight: '500',
   },
 });
 
