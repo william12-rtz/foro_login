@@ -47,8 +47,8 @@ const LoginScreen = ({ navigation }) => {
       }
 
       if (result.success) {
-        Alert.alert('Éxito', result.message);
-        navigation.replace('Home');
+        // La navegación se manejará automáticamente por onAuthStateChanged
+        // No es necesario hacer navigation.replace('Home')
       } else {
         setErrorMessage(result.error);
       }
@@ -70,8 +70,8 @@ const LoginScreen = ({ navigation }) => {
       const result = await authService.loginWithGoogle();
 
       if (result.success) {
-        Alert.alert('Éxito', result.message);
-        navigation.replace('Home');
+        // La navegación se manejará automáticamente por onAuthStateChanged
+        // No es necesario hacer navigation.replace('Home')
       } else if (result.cancelled) {
         // Usuario canceló el popup, no mostrar error
         console.log('Usuario canceló el inicio de sesión con Google');
