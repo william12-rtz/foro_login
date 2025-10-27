@@ -2,6 +2,11 @@
 
 Aplicación de login con React Native, Firebase Authentication y Google Sign-In.
 
+
+### 1. Instalar dependenciasEnlace de video
+
+https://drive.google.com/file/d/1yQ6bV4Naov_cGIjupzqvRQAepjYEsd6-/view?usp=sharing
+
 ##  Pasos para levantar el proyecto
 
 ### 1. Instalar dependencias
